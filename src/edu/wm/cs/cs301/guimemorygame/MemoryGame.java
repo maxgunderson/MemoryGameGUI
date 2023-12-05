@@ -313,4 +313,12 @@ public class MemoryGame {
 		System.out.println(" The goal is to win the game in as few turns as possible.");
 		System.out.println(" ");
 	}
+	
+	public int getRow() {
+		return row;
+	}
+	
+	public int getCol() {
+		return col;
+	}
 }
