@@ -14,8 +14,10 @@ import javax.swing.JPanel;
 public class MainGUI {
 	
 	private JFrame frame; 
+	private MemoryGame game;
 		
-	public MainGUI() {
+	public MainGUI(MemoryGame game) {
+		this.game = game;
 		this.frame = createMainGUI();
 	}
 	
@@ -46,19 +48,17 @@ public class MainGUI {
 	// creates the grid of buttons
 	// later will need to involve lots of code to update each button with values
 	private JPanel createButtonLayout() {
-		JButton[][] grid = new JButton[5][5];
+		JButton[][] grid = new JButton[4][7];
 		JPanel buttonLayout = new JPanel();
-		buttonLayout.setLayout(new GridLayout(5, 5));
+		buttonLayout.setLayout(new GridLayout(4, 7));
 
-		for (int x = 0; x < 5; x++) {
-			for (int y = 0; y < 5; y++) {
-				grid[x][y] = new JButton(x + " " + y);
+		for (int x = 0; x < 4; x++) {
+			for (int y = 0; y < 7; y++) {
+				grid[x][y] = new JButton(game.getBoard().getPieceObject(x+1, y+1).getSymbol().toString());
 				buttonLayout.add(grid[x][y]);
 			}
 		}
 	
-	
-		
 		return buttonLayout;
 		
 	}

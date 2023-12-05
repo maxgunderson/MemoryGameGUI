@@ -24,19 +24,22 @@ public class MemoryGame {
 		records = new ArrayList<>();
 
 		System.out.println("TILE BASED MEMORY GAME\n");
-		readLeaderBoard();
-		displayLeaderBoard();
+//		readLeaderBoard();
+//		displayLeaderBoard();
 		System.out.println(" ");
 		welcomeMessage();
 		runGameFunctions();
 	}
 
 	private void runGameFunctions() {
-		difficultyInput();
-		inputCharSetType();
+//		difficultyInput();
+		difficulty = "medium";
+//		inputCharSetType();
+		charSet = "1";
 		chooseAlphabet();
 		chooseArraySize(difficulty);
 		board = new GameBoard(row, col, Alpha, difficulty);
+		new MainGUI(this);
 		runGame();
 	}
 
@@ -315,10 +318,14 @@ public class MemoryGame {
 	}
 	
 	public int getRow() {
-		return row;
+		return this.row;
 	}
 	
 	public int getCol() {
-		return col;
+		return this.col;
+	}
+	
+	public GameBoard getBoard() {
+		return this.board;
 	}
 }
