@@ -1,5 +1,6 @@
 package edu.wm.cs.cs301.guimemorygame;
 
+import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -15,19 +16,29 @@ public class MainGUI {
 	
 	private JFrame frame; 
 	private MemoryGame game;
-		
+	private JButton[][] buttonGrid;
+	private Buttons buttons;
+	private JButton continueButton;
+	
 	public MainGUI(MemoryGame game) {
 		this.game = game;
-		this.frame = createMainGUI();
+		
+		frame = createMainGUI();
+		buttons = new Buttons(game, game.getBoard(), buttonGrid, continueButton);
+
 	}
 	
 	// creates main gui with all components
 	private JFrame createMainGUI() {
 		JFrame gameFrame = new JFrame("Memory Game");
+		
 		gameFrame.setSize(600, 800);
 		gameFrame.setJMenuBar(createMenuBar());
-		gameFrame.add(createButtonLayout());
+		gameFrame.add(createButtonLayout(), BorderLayout.CENTER);
+		gameFrame.add(createContineButton(), BorderLayout.SOUTH);
+		
 		gameFrame.setVisible(true);
+		
 		return gameFrame;
 	}
 	
@@ -42,24 +53,37 @@ public class MainGUI {
 		menu.add(mediumDifficulty);
 		
 		return menuBar;
-		
 	}
 	
 	// creates the grid of buttons
-	// later will need to involve lots of code to update each button with values
 	private JPanel createButtonLayout() {
-		JButton[][] grid = new JButton[4][7];
-		JPanel buttonLayout = new JPanel();
+		buttonGrid = new JButton[4][7];
+		JPanel buttonLayout = new JPanel(new BorderLayout());
 		buttonLayout.setLayout(new GridLayout(4, 7));
 
 		for (int x = 0; x < 4; x++) {
 			for (int y = 0; y < 7; y++) {
-				grid[x][y] = new JButton(game.getBoard().getPieceObject(x+1, y+1).getSymbol().toString());
-				buttonLayout.add(grid[x][y]);
+				ButtonActionListener listener = new ButtonActionListener(game, game.getBoard(), buttons, x, y);
+				buttonGrid[x][y] = new JButton("?");
+//				buttonGrid[x][y] = new JButton(game.getBoard().getPieceObject(x, y).);
+
+				buttonGrid[x][y].addActionListener(listener);
+				buttonLayout.add(buttonGrid[x][y]);
 			}
 		}
-	
+
 		return buttonLayout;
-		
+	}
+	
+	private JButton createContineButton() {
+		ContinueButtonActionListener listener = new ContinueButtonActionListener(game);
+		continueButton = new JButton("Continue");
+		continueButton.addActionListener(listener);
+		continueButton.setEnabled(false);
+		return continueButton;
+	}
+
+	public Buttons getButton() {
+		return buttons;
 	}
 }

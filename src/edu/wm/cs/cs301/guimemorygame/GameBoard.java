@@ -21,7 +21,7 @@ public class GameBoard {
 		
 		for (int x = 0; x < rows; x++) {
 			for (int y = 0; y < cols; y++) {
-				board[x][y] = new CharacterGamePiece(alphabet[counter]); 
+				board[x][y] = new CharacterGamePiece(alphabet[counter], x, y); 
 				counter ++;
 			}
 		}
@@ -127,10 +127,7 @@ public class GameBoard {
 		System.out.println("   ================================= ");
 	}
 	
-	// adjusted for 1 based indexing 
 	public GamePiece getPieceObject(int rows, int cols) { 
-		rows --; 
-		cols --;
 		return board[rows][cols];
 	}
 }
