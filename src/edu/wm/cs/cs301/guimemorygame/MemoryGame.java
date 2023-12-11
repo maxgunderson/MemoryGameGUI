@@ -28,6 +28,9 @@ public class MemoryGame {
 	private Buttons buttons;
 	private Boolean buttonClickedTurn;
 	private Boolean ableToClickButton;
+	
+	private MainGUI main;
+	
 
 	public MemoryGame() {
 		scanner = new Scanner(System.in);
@@ -48,7 +51,7 @@ public class MemoryGame {
 		chooseArraySize(difficulty);
 		board = new GameBoard(row, col, Alpha, difficulty);
 
-		MainGUI main = new MainGUI(this);
+		main = new MainGUI(this);
 		buttons = main.getButton();
 	}
 	
@@ -81,6 +84,8 @@ public class MemoryGame {
 	public void continueButtonClicked() {
 		if (isMatch(tile1, tile2)) {
 			System.out.println("match");
+			buttons.setGreen(tile1.getRow(), tile1.getCol());
+			buttons.setGreen(tile2.getRow(), tile2.getCol());
 		} else {
 			buttons.flipButtonOver(tile1.getRow(), tile1.getCol());
 			buttons.flipButtonOver(tile2.getRow(), tile2.getCol());
@@ -96,11 +101,16 @@ public class MemoryGame {
 	}
 	
 	// used in continueButton to determine if the game is won,
+	// logic in the if statements is not correct right now
+	// needs to be fixed at a later time
 	public void isGameWon() {
 		for (int x = 0; x < row; x++) {
 			for (int y = 0; y < col; y++) {
 				if (!board.getPieceObject(x, y).isVisible()) {
 					System.out.println("game not over");
+				} else {
+					System.out.println("GAME OVER");
+					return;
 				}
 			}
 		}
@@ -242,5 +252,9 @@ public class MemoryGame {
 	
 	public GameBoard getBoard() {
 		return this.board;
+	}
+	
+	public MainGUI getGUI() {
+		return this.main;
 	}
 }

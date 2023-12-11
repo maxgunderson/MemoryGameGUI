@@ -1,6 +1,8 @@
 package edu.wm.cs.cs301.guimemorygame;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -11,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.plaf.FontUIResource;
 
 public class MainGUI {
 	
@@ -33,6 +36,7 @@ public class MainGUI {
 		JFrame gameFrame = new JFrame("Memory Game");
 		
 		gameFrame.setSize(600, 800);
+		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setJMenuBar(createMenuBar());
 		gameFrame.add(createButtonLayout(), BorderLayout.CENTER);
 		gameFrame.add(createContineButton(), BorderLayout.SOUTH);
@@ -43,14 +47,22 @@ public class MainGUI {
 	}
 	
 	// creates the menu bar at the top with difficulties 
-	private JMenuBar createMenuBar() {
+	private JMenuBar createMenuBar() { // need to add fonts down the line
 		JMenuBar menuBar = new JMenuBar();
 		
 		JMenu menu = new JMenu("Difficulty");
 		menuBar.add(menu);
-		
+				
 		JMenuItem mediumDifficulty = new JMenuItem("Medium");
 		menu.add(mediumDifficulty);
+		
+		JMenu exitComponent = new JMenu("Exit");
+		menuBar.add(exitComponent);
+		
+		JMenuItem exitGame = new JMenuItem("Exit Game"); 
+		exitComponent.add(exitGame);
+		exitGame.addActionListener(e -> {System.exit(0);}); // exit the program 
+
 		
 		return menuBar;
 	}
@@ -64,10 +76,16 @@ public class MainGUI {
 		for (int x = 0; x < 4; x++) {
 			for (int y = 0; y < 7; y++) {
 				ButtonActionListener listener = new ButtonActionListener(game, game.getBoard(), buttons, x, y);
-				buttonGrid[x][y] = new JButton("?");
-//				buttonGrid[x][y] = new JButton(game.getBoard().getPieceObject(x, y).);
+				JButton button = new JButton("?");
+				buttonGrid[x][y] = button;
+				button.addActionListener(listener);
+				// sick idea could be to set the foreground color to green once the continue button is clicked
+//				buttonGrid[x][y].setForeground(Color.red);
+				button.setBackground(Color.red);
+				button.setBorderPainted(false);
+				button.setFont(new FontUIResource("Arial", Font.BOLD, 40));
+				
 
-				buttonGrid[x][y].addActionListener(listener);
 				buttonLayout.add(buttonGrid[x][y]);
 			}
 		}
@@ -82,8 +100,13 @@ public class MainGUI {
 		continueButton.setEnabled(false);
 		return continueButton;
 	}
+	
+	public JButton getContinueButton() {
+		return continueButton;
+	}
 
 	public Buttons getButton() {
 		return buttons;
 	}
+	
 }

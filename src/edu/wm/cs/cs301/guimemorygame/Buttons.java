@@ -1,5 +1,7 @@
 package edu.wm.cs.cs301.guimemorygame;
 
+import java.awt.Color;
+
 import javax.swing.JButton;
 
 public class Buttons {
@@ -39,6 +41,10 @@ public class Buttons {
 	
 	public void disableContinueButton() {
 		continueButton.setEnabled(false);
+	}
+	
+	public void setGreen(int x, int y) {
+		buttonArray[x][y].setForeground(new Color(31, 129, 16));
 	}
 	
 	public void matchingTest(int x, int y) {
