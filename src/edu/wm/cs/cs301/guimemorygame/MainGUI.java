@@ -22,24 +22,28 @@ public class MainGUI {
 	private Buttons buttons;
 	private JButton continueButton;
 	
+	private JLabel turnLabel;
+		
 	public MainGUI(MemoryGame game) {
 		this.game = game;
 		
-		frame = createMainGUI();
+		frame = createMainGUI(4, 7);
 		buttons = new Buttons(game, game.getBoard(), buttonGrid, continueButton);
 
 	}
 	
 	// creates main gui with all components
-	private JFrame createMainGUI() {
+	private JFrame createMainGUI(int x, int y) {
 		JFrame gameFrame = new JFrame("Memory Game");
 		
 		gameFrame.setSize(600, 800);
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
 		gameFrame.setJMenuBar(createMenuBar());
-		gameFrame.add(createButtonLayout(), BorderLayout.CENTER);
-		gameFrame.add(createTurnCount(), BorderLayout.NORTH); // would prefer if this was on the bottom
+		gameFrame.add(createButtonLayout(x, y), BorderLayout.CENTER);
+		gameFrame.add(createTurnCount(), BorderLayout.NORTH); 
 		gameFrame.add(createContineButton(), BorderLayout.SOUTH);
+		
 		gameFrame.setLocationRelativeTo(null);
 		gameFrame.setVisible(true);
 		
@@ -52,9 +56,18 @@ public class MainGUI {
 		
 		JMenu menu = new JMenu("Difficulty");
 		menuBar.add(menu);
+		
+		JMenuItem easyDifficulty = new JMenuItem("Easy");
+		easyDifficulty.addActionListener(e -> {game.updateBoard("easy");});
+		menu.add(easyDifficulty);
 				
 		JMenuItem mediumDifficulty = new JMenuItem("Medium");
+		mediumDifficulty.addActionListener(e -> {game.updateBoard("medium");});
 		menu.add(mediumDifficulty);
+		
+		JMenuItem hardDifficulty = new JMenuItem("Hard");
+		hardDifficulty.addActionListener(e -> {game.updateBoard("hard");});
+		menu.add(hardDifficulty);
 		
 		JMenu exitComponent = new JMenu("Exit");
 		menuBar.add(exitComponent);
@@ -69,7 +82,7 @@ public class MainGUI {
 	
 	private JPanel createTurnCount() {
 		JPanel turnCount = new JPanel(new BorderLayout());
-		JLabel turnLabel = new JLabel("Turn Count: 0");
+		turnLabel = new JLabel("Turn Count: 0");
 		turnCount.add(turnLabel);
 		turnLabel.setHorizontalAlignment(JLabel.CENTER);
 		turnLabel.setFont(new FontUIResource("Arial", Font.BOLD, 25));
@@ -78,13 +91,13 @@ public class MainGUI {
 	}
 	
 	// creates the grid of buttons
-	private JPanel createButtonLayout() {
-		buttonGrid = new JButton[4][7];
+	private JPanel createButtonLayout(int row, int col) {
+		buttonGrid = new JButton[row][col];
 		JPanel buttonLayout = new JPanel(new BorderLayout());
-		buttonLayout.setLayout(new GridLayout(4, 7));
+		buttonLayout.setLayout(new GridLayout(row, col));
 
-		for (int x = 0; x < 4; x++) {
-			for (int y = 0; y < 7; y++) {
+		for (int x = 0; x < row; x++) {
+			for (int y = 0; y < col; y++) {
 				ButtonActionListener listener = new ButtonActionListener(game, game.getBoard(), buttons, x, y);
 				JButton button = new JButton("?");
 				buttonGrid[x][y] = button;
@@ -100,12 +113,32 @@ public class MainGUI {
 		return buttonLayout;
 	}
 	
+	public void updateDifficulty(int x, int y) {
+		frame.getContentPane().removeAll();
+
+		frame.setJMenuBar(createMenuBar());
+		frame.add(createButtonLayout(x, y), BorderLayout.CENTER);
+		frame.add(createTurnCount(), BorderLayout.NORTH); // would prefer if this was on the bottom
+		frame.add(createContineButton(), BorderLayout.SOUTH);
+		frame.setLocationRelativeTo(null);
+
+		frame.revalidate();
+		frame.setSize(600, 800);
+
+		buttons = new Buttons(game, game.getBoard(), buttonGrid, continueButton);
+		
+	}
+	
 	private JButton createContineButton() {
 		ContinueButtonActionListener listener = new ContinueButtonActionListener(game);
 		continueButton = new JButton("Continue");
 		continueButton.addActionListener(listener);
 		continueButton.setEnabled(false);
 		return continueButton;
+	}
+	
+	public void updateTurnLabel() {
+		turnLabel.setText("Turn Count: " + game.getTurncount());
 	}
 	
 	public JButton getContinueButton() {

@@ -12,7 +12,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
-import javax.swing.JButton;
 import javax.swing.Timer;
 
 public class MemoryGame {
@@ -21,6 +20,7 @@ public class MemoryGame {
 	private String charSet;
 	private Scanner scanner;
 	
+	private int turnCount;
 	private int row, col;
 	private Alphabet Alpha;
 	private List<List<String>> records;
@@ -42,21 +42,22 @@ public class MemoryGame {
 
 //		readLeaderBoard();
 //		displayLeaderBoard();
-		runGameFunctions();
+		runGameFunctions("medium");
+		
+		main = new MainGUI(this);
+		buttons = main.getButton();
 	}
 
-	private void runGameFunctions() {
+	private void runGameFunctions(String difficulty) {
+		turnCount = 0;
 		buttonClickedTurn = false;
 		ableToClickButton = true;
-		difficulty = "medium";
+		this.difficulty = difficulty;
 //		inputCharSetType();
 		charSet = "1";
 		chooseAlphabet();
 		chooseArraySize(difficulty);
 		board = new GameBoard(row, col, Alpha, difficulty);
-
-		main = new MainGUI(this);
-		buttons = main.getButton();
 		
 	}
 	
@@ -117,6 +118,8 @@ public class MemoryGame {
 		} else {
 			buttons.flipButtonOver(tile1.getRow(), tile1.getCol());
 			buttons.flipButtonOver(tile2.getRow(), tile2.getCol());
+			turnCount++;
+			main.updateTurnLabel();
 		}
 		ableToClickButton = true;
 	}
@@ -178,6 +181,17 @@ public class MemoryGame {
 			row = 7;
 			col = 8;
 		}
+		
+	}
+	
+	public void updateBoard(String difficulty) {
+		this.difficulty = difficulty;
+		
+		runGameFunctions(difficulty);
+		main.updateDifficulty(row, col);
+
+		buttons = main.getButton();
+
 	}
 
 	// reads in Leaderboard.csv, is run only once at the beginning of game
@@ -275,6 +289,10 @@ public class MemoryGame {
 	
 	public int getCol() {
 		return this.col;
+	}
+	
+	public int getTurncount() {
+		return turnCount;
 	}
 	
 	public GameBoard getBoard() {
