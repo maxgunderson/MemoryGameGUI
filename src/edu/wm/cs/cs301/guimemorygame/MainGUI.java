@@ -4,11 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -39,8 +38,9 @@ public class MainGUI {
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		gameFrame.setJMenuBar(createMenuBar());
 		gameFrame.add(createButtonLayout(), BorderLayout.CENTER);
+		gameFrame.add(createTurnCount(), BorderLayout.NORTH); // would prefer if this was on the bottom
 		gameFrame.add(createContineButton(), BorderLayout.SOUTH);
-		
+		gameFrame.setLocationRelativeTo(null);
 		gameFrame.setVisible(true);
 		
 		return gameFrame;
@@ -67,6 +67,16 @@ public class MainGUI {
 		return menuBar;
 	}
 	
+	private JPanel createTurnCount() {
+		JPanel turnCount = new JPanel(new BorderLayout());
+		JLabel turnLabel = new JLabel("Turn Count: 0");
+		turnCount.add(turnLabel);
+		turnLabel.setHorizontalAlignment(JLabel.CENTER);
+		turnLabel.setFont(new FontUIResource("Arial", Font.BOLD, 25));
+		return turnCount;
+		
+	}
+	
 	// creates the grid of buttons
 	private JPanel createButtonLayout() {
 		buttonGrid = new JButton[4][7];
@@ -79,10 +89,7 @@ public class MainGUI {
 				JButton button = new JButton("?");
 				buttonGrid[x][y] = button;
 				button.addActionListener(listener);
-				// sick idea could be to set the foreground color to green once the continue button is clicked
-//				buttonGrid[x][y].setForeground(Color.red);
 				button.setBackground(Color.red);
-				button.setBorderPainted(false);
 				button.setFont(new FontUIResource("Arial", Font.BOLD, 40));
 				
 

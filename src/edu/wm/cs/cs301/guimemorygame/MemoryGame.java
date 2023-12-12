@@ -1,5 +1,7 @@
 package edu.wm.cs.cs301.guimemorygame;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -11,6 +13,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import javax.swing.JButton;
+import javax.swing.Timer;
 
 public class MemoryGame {
 	private GameBoard board;
@@ -30,6 +33,7 @@ public class MemoryGame {
 	private Boolean ableToClickButton;
 	
 	private MainGUI main;
+	private Timer timer;
 	
 
 	public MemoryGame() {
@@ -53,13 +57,12 @@ public class MemoryGame {
 
 		main = new MainGUI(this);
 		buttons = main.getButton();
+		
 	}
 	
 	// determines what to do when a button is clicked 
 	// rotates back and forth between matches/no matches
-	public void buttonClicked(int x, int y) {
-		boolean match;
-		
+	public void buttonClicked(int x, int y) {		
 		if (!ableToClickButton || board.getPieceObject(x, y).isVisible()) {
 			return;
 		}
@@ -71,6 +74,8 @@ public class MemoryGame {
 			buttonClickedTurn = false;
 			ableToClickButton = false;
 			buttons.enableContinueButton();
+			createTimer();
+
 		} else {
 			flipTile(board, x, y);
 			tile1 = board.getPieceObject(x, y);
@@ -79,6 +84,29 @@ public class MemoryGame {
 			ableToClickButton = true;
 			buttons.disableContinueButton();
 		}
+	}
+	
+	// this creates a 2 second timer that perfroms the continueBUttonClicking 
+	// right now sometimes it goes too fast when the player clicks buttons to fast
+	// i think it has to do with overlapping timers stil going 
+	// small bug/implementation issue to fix 
+	public void createTimer() { 
+		if (timer!= null && timer.isRunning()) {
+			timer.stop();
+		}
+		 timer = new Timer(3000, (ActionListener) new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) { 
+            	if (main.getContinueButton().isEnabled() == false) {
+            		return;
+            	} else {
+                   continueButtonClicked();
+                   main.getContinueButton().setEnabled(false);
+            	}
+            }
+        });
+		timer.setRepeats(false);
+		timer.start();
 	}
 	
 	public void continueButtonClicked() {
@@ -107,7 +135,7 @@ public class MemoryGame {
 		for (int x = 0; x < row; x++) {
 			for (int y = 0; y < col; y++) {
 				if (!board.getPieceObject(x, y).isVisible()) {
-					System.out.println("game not over");
+//					System.out.println("game not over");
 				} else {
 					System.out.println("GAME OVER");
 					return;
@@ -118,7 +146,6 @@ public class MemoryGame {
 
 	// tile match confirmation
 	public boolean isMatch(GamePiece one, GamePiece two) {
-		System.out.println("hello");
 		if (one.equals(two)) {
 			System.out.println("Match!");
 			one.setVisible(true);

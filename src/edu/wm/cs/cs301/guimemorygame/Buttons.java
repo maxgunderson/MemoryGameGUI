@@ -36,7 +36,6 @@ public class Buttons {
 	
 	public void enableContinueButton() {
 		continueButton.setEnabled(true);
-		
 	}
 	
 	public void disableContinueButton() {
