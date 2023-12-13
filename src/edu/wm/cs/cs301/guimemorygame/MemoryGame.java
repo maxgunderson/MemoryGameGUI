@@ -43,13 +43,18 @@ public class MemoryGame {
 //		readLeaderBoard();
 //		displayLeaderBoard();
 		runGameFunctions("medium");
+
+//		chooseArraySize("medium");
 		
 		main = new MainGUI(this);
 		buttons = main.getButton();
+		main.setDifficulty(difficulty);
+//		runGameFunctions("medium");
+
 	}
 
 	private void runGameFunctions(String difficulty) {
-		turnCount = 0;
+		turnCount = 1;
 		buttonClickedTurn = false;
 		ableToClickButton = true;
 		this.difficulty = difficulty;
@@ -121,7 +126,12 @@ public class MemoryGame {
 			turnCount++;
 			main.updateTurnLabel();
 		}
+		
 		ableToClickButton = true;
+		
+		if (isGameWon()) {
+			main.createGameWonFrame();
+		}
 	}
 
 	public void flipTile(GameBoard board, int rows, int cols) {
@@ -134,17 +144,17 @@ public class MemoryGame {
 	// used in continueButton to determine if the game is won,
 	// logic in the if statements is not correct right now
 	// needs to be fixed at a later time
-	public void isGameWon() {
+	public boolean isGameWon() {
 		for (int x = 0; x < row; x++) {
 			for (int y = 0; y < col; y++) {
 				if (!board.getPieceObject(x, y).isVisible()) {
-//					System.out.println("game not over");
-				} else {
-					System.out.println("GAME OVER");
-					return;
-				}
+					System.out.println("GAME NOT OVER");
+					return false;
+				} 
 			}
 		}
+		System.out.println("GAME OVER");
+		return true;
 	}
 
 	// tile match confirmation
@@ -181,7 +191,6 @@ public class MemoryGame {
 			row = 7;
 			col = 8;
 		}
-		
 	}
 	
 	public void updateBoard(String difficulty) {
@@ -189,9 +198,8 @@ public class MemoryGame {
 		
 		runGameFunctions(difficulty);
 		main.updateDifficulty(row, col);
-
+		main.setDifficulty(difficulty);
 		buttons = main.getButton();
-
 	}
 
 	// reads in Leaderboard.csv, is run only once at the beginning of game

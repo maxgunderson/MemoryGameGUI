@@ -16,7 +16,7 @@ public class ContinueButtonActionListener implements ActionListener{
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		game.continueButtonClicked();
-		game.isGameWon();
+//		game.isGameWon();
 		this.button = game.getGUI().getContinueButton();
 		button.setEnabled(false);
 	}

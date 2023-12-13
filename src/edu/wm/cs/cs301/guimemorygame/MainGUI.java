@@ -2,6 +2,7 @@ package edu.wm.cs.cs301.guimemorygame;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 
@@ -15,24 +16,29 @@ import javax.swing.JPanel;
 import javax.swing.plaf.FontUIResource;
 
 public class MainGUI {
-	
+
 	private JFrame frame; 
+	private JFrame gameWonFrame;
+	
 	private MemoryGame game;
 	private JButton[][] buttonGrid;
-	private Buttons buttons;
 	private JButton continueButton;
-	
+	private Buttons buttons;
+	private String difficulty;
 	private JLabel turnLabel;
 		
 	public MainGUI(MemoryGame game) {
+		this.difficulty = "medium";
 		this.game = game;
 		
 		frame = createMainGUI(4, 7);
+		
 		buttons = new Buttons(game, game.getBoard(), buttonGrid, continueButton);
-
+		
+//		createGameWonFrame();
+	
 	}
 	
-	// creates main gui with all components
 	private JFrame createMainGUI(int x, int y) {
 		JFrame gameFrame = new JFrame("Memory Game");
 		
@@ -43,10 +49,10 @@ public class MainGUI {
 		gameFrame.add(createButtonLayout(x, y), BorderLayout.CENTER);
 		gameFrame.add(createTurnCount(), BorderLayout.NORTH); 
 		gameFrame.add(createContineButton(), BorderLayout.SOUTH);
-		
+				
 		gameFrame.setLocationRelativeTo(null);
 		gameFrame.setVisible(true);
-		
+				
 		return gameFrame;
 	}
 	
@@ -69,6 +75,15 @@ public class MainGUI {
 		hardDifficulty.addActionListener(e -> {game.updateBoard("hard");});
 		menu.add(hardDifficulty);
 		
+		JMenu characterSet = new JMenu("Character Set");
+		menuBar.add(characterSet);
+		
+		JMenuItem english = new JMenuItem("English Alphabet");
+		characterSet.add(english);
+		
+		JMenuItem hebrew = new JMenuItem("Hebrew Alphabet");
+		characterSet.add(hebrew);
+		
 		JMenu exitComponent = new JMenu("Exit");
 		menuBar.add(exitComponent);
 		
@@ -82,7 +97,7 @@ public class MainGUI {
 	
 	private JPanel createTurnCount() {
 		JPanel turnCount = new JPanel(new BorderLayout());
-		turnLabel = new JLabel("Turn Count: 0");
+		turnLabel = new JLabel("Turn Count: 1");
 		turnCount.add(turnLabel);
 		turnLabel.setHorizontalAlignment(JLabel.CENTER);
 		turnLabel.setFont(new FontUIResource("Arial", Font.BOLD, 25));
@@ -94,6 +109,7 @@ public class MainGUI {
 	private JPanel createButtonLayout(int row, int col) {
 		buttonGrid = new JButton[row][col];
 		JPanel buttonLayout = new JPanel(new BorderLayout());
+//		buttonLayout.setBackground(Color.DARK_GRAY); // added
 		buttonLayout.setLayout(new GridLayout(row, col));
 
 		for (int x = 0; x < row; x++) {
@@ -141,12 +157,55 @@ public class MainGUI {
 		turnLabel.setText("Turn Count: " + game.getTurncount());
 	}
 	
+	public JFrame createGameWonFrame() {
+		JFrame frame = new JFrame("Game Won");
+		frame.setSize(400, 200);
+		frame.setLocationRelativeTo(null);
+		frame.setVisible(true);
+		frame.add(createTurnCountGameWon(), BorderLayout.NORTH);
+		frame.add(createGameWonButtons(), BorderLayout.CENTER);
+		
+		gameWonFrame = frame;
+		return frame;
+	}
+	
+	private JPanel createTurnCountGameWon() {
+		JPanel count = new JPanel(new BorderLayout());
+		JLabel label = new JLabel("You won the game in " + game.getTurncount() + " moves.");
+		count.add(label);
+		label.setHorizontalAlignment(JLabel.CENTER);
+		label.setFont(new FontUIResource("Arial", Font.BOLD, 25));
+		count.setBackground(Color.LIGHT_GRAY);
+		return count;
+	}
+	
+	private JPanel createGameWonButtons() {
+		JPanel buttons = new JPanel(new FlowLayout());
+		buttons.setBackground(Color.LIGHT_GRAY);
+		JButton playAgain = new JButton("Play Again");
+		JButton exit = new JButton("Exit Game");
+		playAgain.addActionListener(e -> {game.updateBoard(difficulty);  gameWonFrame.dispose();});
+		exit.addActionListener(e -> {System.exit(0);});
+		
+		playAgain.setFont(new FontUIResource("Arial", Font.BOLD, 40));
+		exit.setFont(new FontUIResource("Arial", Font.BOLD, 40));
+		
+		buttons.add(playAgain);
+		buttons.add(exit);
+
+		return buttons;
+	}
+	
 	public JButton getContinueButton() {
 		return continueButton;
 	}
 
 	public Buttons getButton() {
 		return buttons;
+	}
+	
+	public void setDifficulty(String difficulty) {
+		this.difficulty = difficulty;
 	}
 	
 }
