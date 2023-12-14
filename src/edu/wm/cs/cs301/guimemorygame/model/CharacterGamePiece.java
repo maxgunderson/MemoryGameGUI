@@ -1,4 +1,4 @@
-package edu.wm.cs.cs301.guimemorygame;
+package edu.wm.cs.cs301.guimemorygame.model;
 
 public class CharacterGamePiece implements GamePiece {
 	private final Character symbol;

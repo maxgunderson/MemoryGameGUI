@@ -1,4 +1,4 @@
-package edu.wm.cs.cs301.guimemorygame;
+package edu.wm.cs.cs301.guimemorygame.model;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

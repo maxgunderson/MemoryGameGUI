@@ -1,4 +1,4 @@
-package edu.wm.cs.cs301.guimemorygame;
+package edu.wm.cs.cs301.guimemorygame.model;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,12 +14,15 @@ import java.util.Scanner;
 
 import javax.swing.Timer;
 
+import edu.wm.cs.cs301.guimemorygame.view.Buttons;
+import edu.wm.cs.cs301.guimemorygame.view.MainGUI;
+
 public class MemoryGame {
 	private GameBoard board;
 	private String difficulty;
 	private String charSet;
 	private Scanner scanner;
-	
+
 	private int turnCount;
 	private int row, col;
 	private Alphabet Alpha;
@@ -42,15 +45,14 @@ public class MemoryGame {
 
 //		readLeaderBoard();
 //		displayLeaderBoard();
-		runGameFunctions("medium");
-
-//		chooseArraySize("medium");
+		charSet = "1";
+		difficulty = "medium";
+		
+		runGameFunctions(difficulty);
 		
 		main = new MainGUI(this);
 		buttons = main.getButton();
 		main.setDifficulty(difficulty);
-//		runGameFunctions("medium");
-
 	}
 
 	private void runGameFunctions(String difficulty) {
@@ -58,16 +60,11 @@ public class MemoryGame {
 		buttonClickedTurn = false;
 		ableToClickButton = true;
 		this.difficulty = difficulty;
-//		inputCharSetType();
-		charSet = "1";
 		chooseAlphabet();
 		chooseArraySize(difficulty);
 		board = new GameBoard(row, col, Alpha, difficulty);
-		
 	}
 	
-	// determines what to do when a button is clicked 
-	// rotates back and forth between matches/no matches
 	public void buttonClicked(int x, int y) {		
 		if (!ableToClickButton || board.getPieceObject(x, y).isVisible()) {
 			return;
@@ -92,10 +89,6 @@ public class MemoryGame {
 		}
 	}
 	
-	// this creates a 2 second timer that perfroms the continueBUttonClicking 
-	// right now sometimes it goes too fast when the player clicks buttons to fast
-	// i think it has to do with overlapping timers stil going 
-	// small bug/implementation issue to fix 
 	public void createTimer() { 
 		if (timer!= null && timer.isRunning()) {
 			timer.stop();
@@ -117,7 +110,6 @@ public class MemoryGame {
 	
 	public void continueButtonClicked() {
 		if (isMatch(tile1, tile2)) {
-			System.out.println("match");
 			buttons.setGreen(tile1.getRow(), tile1.getCol());
 			buttons.setGreen(tile2.getRow(), tile2.getCol());
 		} else {
@@ -138,34 +130,25 @@ public class MemoryGame {
 		GamePiece[][] array = board.getPiece();
 		array[rows][cols].setVisible(true);
 		buttons.flipButton(rows, cols);
-		board.displayBoard(array);
 	}
 	
-	// used in continueButton to determine if the game is won,
-	// logic in the if statements is not correct right now
-	// needs to be fixed at a later time
 	public boolean isGameWon() {
 		for (int x = 0; x < row; x++) {
 			for (int y = 0; y < col; y++) {
 				if (!board.getPieceObject(x, y).isVisible()) {
-					System.out.println("GAME NOT OVER");
 					return false;
 				} 
 			}
 		}
-		System.out.println("GAME OVER");
 		return true;
 	}
 
-	// tile match confirmation
 	public boolean isMatch(GamePiece one, GamePiece two) {
 		if (one.equals(two)) {
-			System.out.println("Match!");
 			one.setVisible(true);
 			two.setVisible(true);
 			return true;
 		} else {
-			System.out.println("No Match. This turn has ended.");
 			one.setVisible(false);
 			two.setVisible(false);
 			return false;
@@ -195,9 +178,8 @@ public class MemoryGame {
 	
 	public void updateBoard(String difficulty) {
 		this.difficulty = difficulty;
-		
 		runGameFunctions(difficulty);
-		main.updateDifficulty(row, col);
+		main.updateDifficulty(row, col, difficulty);
 		main.setDifficulty(difficulty);
 		buttons = main.getButton();
 	}
@@ -309,5 +291,9 @@ public class MemoryGame {
 	
 	public MainGUI getGUI() {
 		return this.main;
+	}
+	
+	public void setCharSet(String set) {
+		this.charSet = set;
 	}
 }

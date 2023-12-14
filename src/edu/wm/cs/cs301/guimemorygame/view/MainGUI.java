@@ -1,4 +1,4 @@
-package edu.wm.cs.cs301.guimemorygame;
+package edu.wm.cs.cs301.guimemorygame.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -14,6 +14,10 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.plaf.FontUIResource;
+
+import edu.wm.cs.cs301.guimemorygame.controller.ButtonActionListener;
+import edu.wm.cs.cs301.guimemorygame.controller.ContinueButtonActionListener;
+import edu.wm.cs.cs301.guimemorygame.model.MemoryGame;
 
 public class MainGUI {
 
@@ -31,22 +35,20 @@ public class MainGUI {
 		this.difficulty = "medium";
 		this.game = game;
 		
-		frame = createMainGUI(4, 7);
+		frame = createMainGUI();
 		
 		buttons = new Buttons(game, game.getBoard(), buttonGrid, continueButton);
-		
-//		createGameWonFrame();
-	
+			
 	}
 	
-	private JFrame createMainGUI(int x, int y) {
+	private JFrame createMainGUI() {
 		JFrame gameFrame = new JFrame("Memory Game");
 		
 		gameFrame.setSize(600, 800);
 		gameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		gameFrame.setJMenuBar(createMenuBar());
-		gameFrame.add(createButtonLayout(x, y), BorderLayout.CENTER);
+		gameFrame.add(createButtonLayout(4, 7), BorderLayout.CENTER);
 		gameFrame.add(createTurnCount(), BorderLayout.NORTH); 
 		gameFrame.add(createContineButton(), BorderLayout.SOUTH);
 				
@@ -79,9 +81,11 @@ public class MainGUI {
 		menuBar.add(characterSet);
 		
 		JMenuItem english = new JMenuItem("English Alphabet");
+		english.addActionListener(e -> {game.setCharSet("1"); game.updateBoard(difficulty);});
 		characterSet.add(english);
 		
 		JMenuItem hebrew = new JMenuItem("Hebrew Alphabet");
+		hebrew.addActionListener(e -> {game.setCharSet("0"); game.updateBoard(difficulty);});
 		characterSet.add(hebrew);
 		
 		JMenu exitComponent = new JMenu("Exit");
@@ -109,12 +113,11 @@ public class MainGUI {
 	private JPanel createButtonLayout(int row, int col) {
 		buttonGrid = new JButton[row][col];
 		JPanel buttonLayout = new JPanel(new BorderLayout());
-//		buttonLayout.setBackground(Color.DARK_GRAY); // added
 		buttonLayout.setLayout(new GridLayout(row, col));
 
 		for (int x = 0; x < row; x++) {
 			for (int y = 0; y < col; y++) {
-				ButtonActionListener listener = new ButtonActionListener(game, game.getBoard(), buttons, x, y);
+				ButtonActionListener listener = new ButtonActionListener(game, x, y);
 				JButton button = new JButton("?");
 				buttonGrid[x][y] = button;
 				button.addActionListener(listener);
@@ -129,12 +132,14 @@ public class MainGUI {
 		return buttonLayout;
 	}
 	
-	public void updateDifficulty(int x, int y) {
+	public void updateDifficulty(int x, int y, String difficulty) {
+		this.difficulty = difficulty;
+		
 		frame.getContentPane().removeAll();
 
 		frame.setJMenuBar(createMenuBar());
 		frame.add(createButtonLayout(x, y), BorderLayout.CENTER);
-		frame.add(createTurnCount(), BorderLayout.NORTH); // would prefer if this was on the bottom
+		frame.add(createTurnCount(), BorderLayout.NORTH); 
 		frame.add(createContineButton(), BorderLayout.SOUTH);
 		frame.setLocationRelativeTo(null);
 

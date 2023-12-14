@@ -1,8 +1,12 @@
-package edu.wm.cs.cs301.guimemorygame;
+package edu.wm.cs.cs301.guimemorygame.view;
 
 import java.awt.Color;
 
 import javax.swing.JButton;
+
+import edu.wm.cs.cs301.guimemorygame.model.GameBoard;
+import edu.wm.cs.cs301.guimemorygame.model.GamePiece;
+import edu.wm.cs.cs301.guimemorygame.model.MemoryGame;
 
 public class Buttons {
 	
@@ -15,7 +19,7 @@ public class Buttons {
 	private JButton[][] buttonArray;
 	private JButton continueButton;
 
-	private boolean secondTileClick = false; // used to determine if were on the first or second flip
+	private boolean secondTileClick = false; // first or second tile flip
 	
 
 	public Buttons(MemoryGame game, GameBoard board, JButton[][] grid, JButton continueButton) {
