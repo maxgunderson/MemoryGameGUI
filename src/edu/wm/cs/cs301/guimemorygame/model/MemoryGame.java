@@ -43,8 +43,9 @@ public class MemoryGame {
 		scanner = new Scanner(System.in);
 		records = new ArrayList<>();
 
-//		readLeaderBoard();
-//		displayLeaderBoard();
+		readLeaderBoard();
+		displayLeaderBoard();
+		
 		charSet = "1";
 		difficulty = "medium";
 		
