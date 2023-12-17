@@ -13,6 +13,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.plaf.FontUIResource;
 
 import edu.wm.cs.cs301.guimemorygame.controller.ButtonActionListener;
@@ -40,6 +41,7 @@ public class MainGUI {
 		buttons = new Buttons(game, game.getBoard(), buttonGrid, continueButton);
 		
 		new InstructionsPanel();
+//		createGameWonFrame();
 
 	}
 
@@ -177,13 +179,14 @@ public class MainGUI {
 
 	public JFrame createGameWonFrame() {
 		JFrame frame = new JFrame("Game Won");
-		frame.setSize(400, 200);
+		frame.setSize(600, 200);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		frame.add(createTurnCountGameWon(), BorderLayout.NORTH);
 		frame.add(createGameWonButtons(), BorderLayout.CENTER);
 
 		gameWonFrame = frame;
+		frame.repaint();
 		return frame;
 	}
 
@@ -210,26 +213,39 @@ public class MainGUI {
 
 	private JPanel createGameWonButtons() {
 		JPanel buttons = new JPanel(new FlowLayout());
+		
 		buttons.setBackground(Color.LIGHT_GRAY);
+		
 		JButton playAgain = new JButton("Play Again");
 		JButton exit = new JButton("Exit Game");
+		
+		JTextField field = new JTextField(15);
+		JButton inputName = new JButton("Submit Username");
+		
+		
 		playAgain.addActionListener(e -> {
 			game.updateBoard(difficulty);
 			gameWonFrame.dispose();
+			new LeaderBoardPanel(game.getLeaderBoardData());
 		});
+		
 		exit.addActionListener(e -> {
 			System.exit(0);
 		});
+		
+		inputName.addActionListener(e -> game.setName(field.getText()));
 
 		playAgain.setFont(new FontUIResource("Arial", Font.BOLD, 40));
 		exit.setFont(new FontUIResource("Arial", Font.BOLD, 40));
 
 		buttons.add(playAgain);
 		buttons.add(exit);
+		buttons.add(field);
+		buttons.add(inputName);
 
 		return buttons;
 	}
-
+	
 	public JButton getContinueButton() {
 		return continueButton;
 	}

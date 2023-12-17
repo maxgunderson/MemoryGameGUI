@@ -15,13 +15,17 @@ import java.util.Scanner;
 import javax.swing.Timer;
 
 import edu.wm.cs.cs301.guimemorygame.view.Buttons;
+import edu.wm.cs.cs301.guimemorygame.view.LeaderBoardPanel;
 import edu.wm.cs.cs301.guimemorygame.view.MainGUI;
 
 public class MemoryGame {
 	private GameBoard board;
 	private String difficulty;
 	private String charSet;
+	private String userName;
 	private Scanner scanner;
+	
+	private String leaderBoardData;
 
 	private int turnCount;
 	private int row, col;
@@ -44,7 +48,7 @@ public class MemoryGame {
 		records = new ArrayList<>();
 
 		readLeaderBoard();
-		displayLeaderBoard();
+		setLeaderBoardText();
 		
 		charSet = "1";
 		difficulty = "medium";
@@ -54,6 +58,8 @@ public class MemoryGame {
 		main = new MainGUI(this);
 		buttons = main.getButton();
 		main.setDifficulty(difficulty);
+		
+		new LeaderBoardPanel(leaderBoardData);
 	}
 
 	private void runGameFunctions(String difficulty) {
@@ -203,20 +209,24 @@ public class MemoryGame {
 	}
 
 	// displays the current Leaderboard using the "records" list
-	private void displayLeaderBoard() {
-		String value = "";
-
-		System.out.println("LEADERBOARD:");
+	private void setLeaderBoardText() {
+//		main.displayLeaderBoard();
+//		String value = "";
+		leaderBoardData = "";
+//		System.out.println("LEADERBOARD:");
 		for (int i = 0; i < records.size(); i++) {
 			List<String> record = records.get(i);
 			for (int x = 0; x < record.size(); x++) {
-				value += " " + record.get(x);
+				leaderBoardData += " " + record.get(x);
 			}
 			if (i != records.size()) { // account for extra array block
-				System.out.println(value + " turns");
+				leaderBoardData += " turns\n\n";
+//				System.out.println(value + " turns\n");
 			}
-			value = "";
+//			value = "";
 		}
+		System.out.println(leaderBoardData); 
+
 	}
 
 	// write to actual csv file if score is appropriate
@@ -250,28 +260,26 @@ public class MemoryGame {
 	}
 
 	// determines if the user's score after a win should be written
-	private void determineScoreForLeaderboard(String difficulty, String turnCount) {
-		String userName;
+	private void determineScoreForLeaderboard(String turnCount) {
 		int intTurnCount = Integer.valueOf(turnCount);
-
+		
 		if ((difficulty.equals("easy")) && (intTurnCount <= Integer.valueOf(records.get(0).get(2)))) {
-			printHelperForLeaderBoard(difficulty);
-			userName = scanner.nextLine().replaceAll("\\s", "");
 			writeToLeaderBoard(difficulty, userName, turnCount);
 		} else if ((difficulty.equals("medium")) && (intTurnCount <= Integer.valueOf(records.get(1).get(2)))) {
-			printHelperForLeaderBoard(difficulty);
-			userName = scanner.nextLine().replaceAll("\\s", "");
 			writeToLeaderBoard(difficulty, userName, turnCount);
 		} else if ((difficulty.equals("hard")) && (intTurnCount <= Integer.valueOf(records.get(2).get(2)))) {
-			printHelperForLeaderBoard(difficulty);
-			userName = scanner.nextLine().replaceAll("\\s", "");
 			writeToLeaderBoard(difficulty, userName, turnCount);
 		}
 	}
 	
-	private void printHelperForLeaderBoard(String difficulty) {
-		System.out.println("New Highscore for difficulty level " + difficulty);
-		System.out.println("Enter your name to be displayed on the leaderboard:");
+	public void setName(String name) {
+		userName = name;
+		determineScoreForLeaderboard(String.valueOf(turnCount));
+		setLeaderBoardText();
+	}
+	
+	public String getLeaderBoardData() {
+		return leaderBoardData;
 	}
 
 	public int getRow() {
