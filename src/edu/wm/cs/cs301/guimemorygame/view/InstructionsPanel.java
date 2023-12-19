@@ -8,10 +8,8 @@ import javax.swing.plaf.FontUIResource;
 
 public class InstructionsPanel {
 
-	private JFrame instructions;
-
 	public InstructionsPanel() {
-		instructions = initializeInstructionsFrame();
+		initializeInstructionsFrame();
 	}
 
 	private JFrame initializeInstructionsFrame() {

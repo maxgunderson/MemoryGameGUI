@@ -30,7 +30,7 @@ public class LatinAlphabet implements Alphabet {
 			}
 		}
 
-//		Collections.shuffle(charList);
+		Collections.shuffle(charList);
 		char[] shuffledCharacters = new char[charList.size()];
 		
 		for (int i = 0; i < charList.size(); i++) {

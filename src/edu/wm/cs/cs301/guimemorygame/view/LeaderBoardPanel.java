@@ -11,7 +11,6 @@ import javax.swing.JTextArea;
 import javax.swing.plaf.FontUIResource;
 
 public class LeaderBoardPanel {
-	// work in progress 
 	private JFrame leaderBoard;
 	private String data;
 	

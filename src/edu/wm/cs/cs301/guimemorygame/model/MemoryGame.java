@@ -20,11 +20,10 @@ import edu.wm.cs.cs301.guimemorygame.view.MainGUI;
 
 public class MemoryGame {
 	private GameBoard board;
+	
 	private String difficulty;
 	private String charSet;
-	private String userName;
-	private Scanner scanner;
-	
+	private String userName;	
 	private String leaderBoardData;
 
 	private int turnCount;
@@ -44,7 +43,6 @@ public class MemoryGame {
 	
 
 	public MemoryGame() {
-		scanner = new Scanner(System.in);
 		records = new ArrayList<>();
 
 		readLeaderBoard();
@@ -210,10 +208,7 @@ public class MemoryGame {
 
 	// displays the current Leaderboard using the "records" list
 	private void setLeaderBoardText() {
-//		main.displayLeaderBoard();
-//		String value = "";
 		leaderBoardData = "";
-//		System.out.println("LEADERBOARD:");
 		for (int i = 0; i < records.size(); i++) {
 			List<String> record = records.get(i);
 			for (int x = 0; x < record.size(); x++) {
@@ -221,12 +216,8 @@ public class MemoryGame {
 			}
 			if (i != records.size()) { // account for extra array block
 				leaderBoardData += " turns\n\n";
-//				System.out.println(value + " turns\n");
 			}
-//			value = "";
 		}
-		System.out.println(leaderBoardData); 
-
 	}
 
 	// write to actual csv file if score is appropriate

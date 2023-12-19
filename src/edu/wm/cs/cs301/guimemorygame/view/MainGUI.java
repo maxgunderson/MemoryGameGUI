@@ -41,8 +41,6 @@ public class MainGUI {
 		buttons = new Buttons(game, game.getBoard(), buttonGrid, continueButton);
 		
 		new InstructionsPanel();
-//		createGameWonFrame();
-
 	}
 
 	private JFrame createMainGUI() {
@@ -63,7 +61,7 @@ public class MainGUI {
 	}
 
 	// creates the menu bar at the top with difficulties
-	private JMenuBar createMenuBar() { // need to add fonts down the line
+	private JMenuBar createMenuBar() { 
 		JMenuBar menuBar = new JMenuBar();
 
 		JMenu menu = new JMenu("Difficulty");
