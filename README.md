@@ -9,5 +9,5 @@ Players uncover pairs of tiles to match them. The GUI interface displays the gam
 ## Leaderboard 
 If the players turn count is less than that of the current leaderboards, the user has the option to input their name and the leaderboard is updated and displayed.
 
-## Charachter Sets
-The game offers two charachter sets to choose from: the English alphabet and optionally, the Hebrew alphabet. These sets are statically generated using unicode values. 
+## Character Sets
+The game offers two character sets to choose from: the English alphabet and optionally, the Hebrew alphabet. These sets are statically generated using unicode values. 
