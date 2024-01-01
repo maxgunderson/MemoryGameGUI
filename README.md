@@ -1,1 +1,7 @@
-I would like to use all my slip days for this project
+# GUI Memory Game 
+
+## Overview
+
+This project involves creating a memory game using the Java Swing library. 
+
+## Overview
